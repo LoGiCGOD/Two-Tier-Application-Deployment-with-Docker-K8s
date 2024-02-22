@@ -1,0 +1,30 @@
+
+
+# apiVersion: v1
+# kind: PersistentVolume
+# metadata:
+#   name: mongo-pv
+#   namespace: db
+# spec:
+#   capacity:
+#     storage: 1Gi
+#   accessModes:
+#     - ReadWriteOnce
+#   hostPath:
+#     path: "/home/logicgod/Documents/persistent_volm"
+
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mongo-pv
+  namespace: db
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-storage  
+  hostPath:
+    path: "/home/logicgod/Documents/persistent_volm"
+

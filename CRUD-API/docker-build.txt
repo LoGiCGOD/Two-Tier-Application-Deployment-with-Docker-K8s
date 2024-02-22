@@ -1,0 +1,3 @@
+docker build -t api:v3.0 .
+docker tag api:v3.0 logicgod007/new_repo:v3.0
+docker push logicgod007/new_repo:v3.0

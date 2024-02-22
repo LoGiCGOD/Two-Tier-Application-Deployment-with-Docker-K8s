@@ -1,0 +1,91 @@
+
+
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: api-deployment
+#   namespace: api
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: flask-api
+#   template:
+#     metadata:
+#       labels:
+#         app: flask-api
+#     spec:
+#       containers:
+#         - name: api-container
+#           image: logicgod007/new_repo:v3.0
+#           ports:
+#             - containerPort: 8000
+#           env:
+#             - name: MONGO_USERNAME
+#               valueFrom:
+#                 secretKeyRef:
+#                   name: mongo-secret
+#                   key: username
+#             - name: MONGO_PASSWORD
+#               valueFrom:
+#                 secretKeyRef:
+#                   name: mongo-secret
+#                   key: password
+#             - name: MONGO_DATABASE
+#               valueFrom:
+#                 configMapKeyRef:
+#                   name: mongo-config
+#                   key: database
+
+#         - name: prometheus-exporter
+#           image: prom/node-exporter:latest
+#           ports:
+#             - containerPort: 9100
+
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-deployment
+  namespace: api
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/path: "/metrics"
+    prometheus.io/port: "8000"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flask-api
+  template:
+    metadata:
+      labels:
+        app: flask-api
+    spec:
+      containers:
+        - name: api-container
+          image: logicgod007/new_repo:v3.0
+          ports:
+            - containerPort: 8000
+          env:
+            - name: MONGO_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret
+                  key: username
+            - name: MONGO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret
+                  key: password
+            - name: MONGO_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: mongo-config
+                  key: database
+
+        - name: prometheus-exporter
+          image: prom/node-exporter:latest
+          ports:
+            - containerPort: 9100
